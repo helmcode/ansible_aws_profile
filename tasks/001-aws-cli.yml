@@ -1,0 +1,27 @@
+---
+- name: Download AWS CLI Package
+  get_url:
+    url: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+    dest: /tmp/awscliv2.zip
+    mode: '0755'
+
+- name: Unarchive a file that is already on the remote machine
+  unarchive:
+    src: /tmp/awscliv2.zip
+    dest: /tmp/
+    remote_src: yes
+
+- name: Run a install script
+  shell:
+    cmd: /tmp/aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
+
+- name: Delete awscliv2.zip
+  file:
+    state: absent
+    path: /tmp/awscliv2.zip
+
+- name: Delete unzip aws directory
+  file:
+    state: absent
+    path: /tmp/aws
+

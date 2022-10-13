@@ -1,0 +1,28 @@
+---
+- import_tasks: 001-aws-cli.yml
+  tags:
+    - aws_cli
+
+# Configure for root
+- import_tasks: 002-aws-profile.yml
+  tags:
+    - aws-profile
+
+# Configure for {{ alternative_user }} User
+- import_tasks: 002-aws-profile.yml
+  become_user: "{{ alternative_user }}"
+  tags:
+    - aws-profile
+  when: alternative_user is defined
+
+# Export AWS Credentials for root
+- import_tasks: 003-export-aws-credentials.yml
+  tags:
+    - export-aws-credentials
+
+# Export AWS Credentials for {{ alternative_user }}
+- import_tasks: 003-export-aws-credentials.yml
+  become_user: "{{ alternative_user }}"
+  tags:
+    - export-aws-credentials
+  when: alternative_user is defined

@@ -1,0 +1,20 @@
+---
+- name: Get the username running task
+  shell:
+    cmd: whoami
+  register: user_on_the_host
+
+- name: User profile
+  debug: msg="Configure Profile for {{ user_on_the_host.stdout }}"
+
+- name: Configure aws_access_key_id
+  shell:
+    cmd: aws configure set aws_access_key_id {{ AWS_ACCESS_KEY_ID }} --profile terraform
+
+- name: Configure aws_secret_access_key
+  shell:
+    cmd: aws configure set aws_secret_access_key {{ AWS_SECRET_ACCESS_KEY }} --profile terraform
+
+- name: Configure aws region
+  shell:
+    cmd: aws configure set region {{ AWS_REGION }} --profile terraform
